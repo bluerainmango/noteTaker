@@ -71,9 +71,7 @@ $(document).ready(() => {
     var note = $(this)
       .parent(".list-group-item")
       .data();
-    console.log("el to delete's data: ", note); // {title: , text: }
 
-    console.log("activeNote: ", activeNote);
     if (activeNote.id === note.id) {
       activeNote = {};
     }
@@ -108,7 +106,6 @@ $(document).ready(() => {
 
   // Render's the list of note titles
   var renderNoteList = function(notes) {
-    console.log("data from db: ", notes);
     $noteList.empty();
 
     var noteListItems = [];
@@ -118,7 +115,9 @@ $(document).ready(() => {
 
       var $li = $("<li class='list-group-item'>").data(note);
       var $span = $("<span>").text(note.title);
-      var $delBtn = $("<i class='fas fa-trash-alt float-right text-danger delete-note'>");
+      var $delBtn = $(
+        "<i class='fas fa-trash-alt float-right text-danger delete-note'>"
+      );
 
       $li.append($span, $delBtn);
       noteListItems.push($li);
@@ -130,7 +129,6 @@ $(document).ready(() => {
   // Gets notes from the db and renders them to the sidebar
   var getAndRenderNotes = function() {
     return getNotes().then(function(data) {
-      console.log("given json data: ", data);
       renderNoteList(data);
     });
   };
