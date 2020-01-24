@@ -36,3 +36,16 @@ app.listen(PORT, err => {
   if (err) console.log(err);
   console.log("Listening...");
 });
+
+//! Global error handling middleware
+app.use((err, req, res, next) => {
+  // For interal check
+  console.log(err);
+
+  // For sending err to client
+  res
+    .status(500)
+    .send(
+      "🚨 Something went wrong. Cannot operate as you requested. Try later."
+    );
+});
