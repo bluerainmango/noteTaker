@@ -70,7 +70,7 @@ var handleNoteDelete = function(event) {
   var note = $(this)
     .parent(".list-group-item")
     .data();
-
+  console.log(note);
   if (activeNote.id === note.id) {
     activeNote = {};
   }
@@ -105,18 +105,17 @@ var handleRenderSaveBtn = function() {
 
 // Render's the list of note titles
 var renderNoteList = function(notes) {
+  console.log("render list");
   $noteList.empty();
 
   var noteListItems = [];
 
   for (var i = 0; i < notes.length; i++) {
     var note = notes[i];
-
+    console.log(note);
     var $li = $("<li class='list-group-item'>").data(note);
     var $span = $("<span>").text(note.title);
-    var $delBtn = $(
-      "<i class='fas fa-trash-alt float-right text-danger delete-note'>"
-    );
+    var $delBtn = $("<i class='fas fa-trash-alt float-right text-danger delete-note'>");
 
     $li.append($span, $delBtn);
     noteListItems.push($li);
@@ -128,6 +127,7 @@ var renderNoteList = function(notes) {
 // Gets notes from the db and renders them to the sidebar
 var getAndRenderNotes = function() {
   return getNotes().then(function(data) {
+    console.log("given json data: ", data);
     renderNoteList(data);
   });
 };
