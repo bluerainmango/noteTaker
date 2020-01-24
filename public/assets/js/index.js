@@ -71,7 +71,8 @@ $(document).ready(() => {
     var note = $(this)
       .parent(".list-group-item")
       .data();
-    console.log(note);
+    console.log("el to delete's data: ", note); // {title: , text: }
+
     if (activeNote.id === note.id) {
       activeNote = {};
     }
@@ -106,16 +107,15 @@ $(document).ready(() => {
 
   // Render's the list of note titles
   var renderNoteList = function(notes) {
-    console.log("render list");
+    console.log("data from db: ", notes);
     $noteList.empty();
 
     var noteListItems = [];
 
     for (var i = 0; i < notes.length; i++) {
       var note = notes[i];
-      console.log(notes);
+
       var $li = $("<li class='list-group-item'>").data(note);
-      console.log($li);
       var $span = $("<span>").text(note.title);
       var $delBtn = $("<i class='fas fa-trash-alt float-right text-danger delete-note'>");
 
