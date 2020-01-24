@@ -17,8 +17,9 @@ const writeFile = promisify(fs.writeFile);
 app
   .route("/api/notes")
   .get(getNoteHandler)
-  .post(addIdToNote, postNoteHandler)
-  .delete(deleteNoteHandler);
+  .post(addIdToNote, postNoteHandler);
+
+app.delete("/api/notes/:id", deleteNoteHandler);
 
 //! Rendered pages
 app.get("/notes", (req, res) => {
@@ -33,7 +34,7 @@ app.all("*", (req, res) => {
 
 // Add the auto incremented id to req.body
 async function addIdToNote(req, res, next) {
-  // Increment from lastest note's id
+  // Set new note's id by incrementing the previous one's id
   const notes = await getNotesFromDB();
   const id = notes[notes.length - 1].id + 1;
   req.body.id = id;
@@ -51,12 +52,27 @@ async function postNoteHandler(req, res) {
   await writeFile(path.join(__dirname, "db", "db.json"), JSON.stringify(notes));
   res.status(200).send("Successfully posted!");
 }
-function deleteNoteHandler(req, res) {}
+async function deleteNoteHandler(req, res) {
+  console.log("delete req is requested");
+  const notes = await getNotesFromDB();
+
+  // Find the note having the same id of req and delete it
+  const targetId = req.params.id * 1;
+  const notesAfterDelete = notes.filter((note, i) => note.id !== targetId);
+
+  await saveNotesToDB(notesAfterDelete);
+  res.status(200).send("Successfully deleted!");
+}
 
 // Get the latest notes(array) from DB
 async function getNotesFromDB() {
   const notes = await readFile(path.join(__dirname, "db", "db.json"), "utf8");
   return JSON.parse(notes);
+}
+
+// Save the notes to DB
+async function saveNotesToDB(updatedData) {
+  await writeFile(path.join(__dirname, "db", "db.json"), JSON.stringify(updatedData));
 }
 
 //! Server

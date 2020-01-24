@@ -73,6 +73,7 @@ $(document).ready(() => {
       .data();
     console.log("el to delete's data: ", note); // {title: , text: }
 
+    console.log("activeNote: ", activeNote);
     if (activeNote.id === note.id) {
       activeNote = {};
     }
