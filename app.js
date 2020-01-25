@@ -1,6 +1,10 @@
 const path = require("path");
 const express = require("express");
 
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+
 const {
   getNoteHandler,
   postNoteHandler,
@@ -13,6 +17,16 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+
+//! SECURITY
+app.use(helmet());
+app.use(xss());
+const limiter = rateLimit({
+  max: 100,
+  windowsMS: 60 * 60 * 1000,
+  message: "Too many requests from this IP. Try later!"
+});
+app.use("/api", limiter);
 
 //! API
 app
@@ -39,7 +53,7 @@ app.listen(PORT, err => {
 
 //! Global error handling middleware
 app.use((err, req, res, next) => {
-  // For interal check
+  // For internal check
   console.log(err);
 
   // For sending err to client

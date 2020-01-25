@@ -9,7 +9,6 @@ exports.getNoteHandler = catchAsync(async (req, res, next) => {
 // * Handler(POST)
 exports.postNoteHandler = catchAsync(async (req, res, next) => {
   const notes = await getNotesFromDB();
-  console.log("err", notes);
   notes.push(req.body);
 
   await saveNotesToDB(notes);
@@ -33,7 +32,9 @@ exports.deleteNoteHandler = catchAsync(async (req, res, next) => {
 exports.addIdToNote = catchAsync(async (req, res, next) => {
   // New note's id : incremented from the previous note's id
   const notes = await getNotesFromDB();
-  req.body.id = notes[notes.length - 1].id + 1;
+  const nl = notes.length;
+
+  req.body.id = nl === 0 ? 1 : notes[nl - 1].id + 1;
 
   next();
 });
