@@ -5,11 +5,11 @@
 
 ## 🎯 Purpose
 
-Write, save, and delete notes with this app so that you can keep your idea or check to-dos whenever needed.
+Write, save, and delete notes with this app so that you can keep your ideas or check your to-dos whenever needed.
 
 ## 🗒 Notice
 
-I built the backend and connect to the frontend template created by UCR extension.
+I built the backend and connected the frontend template created by UCR extension.
 
 ## 💫 Demo
 
